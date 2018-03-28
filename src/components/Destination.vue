@@ -1,7 +1,7 @@
 <template>
 	<div id="Destination">
 		<label>Destination:</label>
-		<input  v-model="projectid" type="text">
+		<input  v-bind:projectid="projectid" type="text">
 		 <p>Project Id: {{ projectid }}</p>
 		</input>
 	</div>
