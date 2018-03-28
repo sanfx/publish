@@ -4,14 +4,14 @@
     <select v-model="selected" v-on:change="executeLoader">
         <option disabled selected>Please Select One</option>
         <!--option></option-->
-        <option v-for="n in projects" :value="n">
-            {{ n.name }}
+        <option v-for="(n, index) in projects" :value="n" :key="n.id">
+            {{ index }} - {{ n.name }}
         </option>
     </select>
     <div class="round-button">
         <div class="round-button-circle">
             <a href="#">
-                <img src="images/leftarrow.png"  alt="Reload" title="Sync with Gitlab" />
+                <img src="images/leftarrow.png"  alt="Reload" title="Sync with Github" />
             </a>
         </div>
     </div> &nbsp;
@@ -38,6 +38,7 @@ export default {
   return { 
     projects: [],
     branches: [],
+    projectid: "",
     selected: "Please Select One",
     isRunning: false,
     selectedBranch: "Select a branch",
@@ -47,10 +48,10 @@ export default {
   methods : {
    branchSelecter: function(project){
     var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
-   this.message = "Project: " + this.selected.name + " Branch: "+ this.selectedBranch.name;
+   this.message = "Project ID: " + this.selected.id + "-" + this.selected.name + " Branch: "+ this.selectedBranch.name;
    },
    executeLoader: function(){
-            var baseMsg = "Project: " + this.selected.name;
+            var baseMsg = "Project ID: " + this.selected.id + " - " + this.selected.name;
             this.message = baseMsg + " pulling branches from github."
          if (!this.selected){
             console.log("Nothing is selected");
@@ -59,6 +60,7 @@ export default {
          } else {
          this.branches = ["master"];
          var url = "https://api.github.com/repos/sanfx/"+ this.selected.name +"/branches"
+         this.projectid = this.selected.id;
          console.log(url);
              axios.get(
                  url
