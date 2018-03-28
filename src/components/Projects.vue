@@ -1,7 +1,7 @@
 <template>
 <div id="select"><label> Source </label>
     <label>Project</label>
-    <select v-model="selected" v-on:change="executeLoader()"># v-bind:disabled="isRunning">
+    <select v-model="selected" v-on:change="executeLoader">
         <option disabled selected>Please Select One</option>
         <!--option></option-->
         <option v-for="n in projects" :value="n">
@@ -16,7 +16,7 @@
         </div>
     </div> &nbsp;
     <label>Branch:</label>
-    <select v-model="selectedBranch" v-on:change="branchSelecter()">
+    <select v-model="selectedBranch" v-on:change="branchSelecter">
         <option disabled selected>Select a branch</option>
         <option v-for="b in branches" :value="b">
             {{ b.name }}
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
   name: 'Projects',
   data: function () {
@@ -37,16 +40,17 @@ export default {
     branches: [],
     selected: "Please Select One",
     isRunning: false,
-    selectedBranch: "Select a branch"
+    selectedBranch: "Select a branch",
+    message: ""
   }
 },
   methods : {
    branchSelecter: function(project){
-    msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
+    var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
    this.message = "Project: " + this.selected.name + " Branch: "+ this.selectedBranch.name;
    },
    executeLoader: function(){
-            baseMsg = "Project: " + this.selected.name;
+            var baseMsg = "Project: " + this.selected.name;
             this.message = baseMsg + " pulling branches from github."
          if (!this.selected){
             console.log("Nothing is selected");
@@ -54,18 +58,10 @@ export default {
 
          } else {
          this.branches = ["master"];
-         url = "https://api.github.com/repos/sanfx/"+ this.selected.name +"/branches"
+         var url = "https://api.github.com/repos/sanfx/"+ this.selected.name +"/branches"
          console.log(url);
              axios.get(
-                 url,
-                     {
-                     mode: 'no-cors',
-                     headers:
-                         {
-                             'Accept': 'application/json;charset=UTF-8',
-                             'Access-Control-Allow-Origin': '*'
-                         }
-                     }
+                 url
                  )
              .then(response => {
                  this.branches = response.data;
@@ -85,9 +81,8 @@ export default {
    mounted() {
    axios.get("https://api.github.com/users/sanfx/repos")
    .then(response => {
-           this.selectedBranch = "";
-           console.log(response.data);
-         this.projects = response.data;
+          this.selectedBranch = "";
+          this.projects = response.data;
       })
 
    }

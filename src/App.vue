@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <!--router-view/-->
+    <Projects/>
+    <Destination/>
   </div>
 </template>
 
 <script>
+import Projects from    './components/Projects';
+import Destination from './components/Destination';
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+   Projects,
+   Destination
+   
+  }
 }
 </script>
 
