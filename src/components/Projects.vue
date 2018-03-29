@@ -31,7 +31,7 @@
 <script>
 
 import axios from 'axios';
-
+import {bus} from './main';
 export default {
   name: 'Projects',
   data: function () {
@@ -47,8 +47,9 @@ export default {
 },
   methods : {
    branchSelecter: function(project){
-    var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
+   var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
    this.message = "Project ID: " + this.selected.id + "-" + this.selected.name + " Branch: "+ this.selectedBranch.name;
+   bus.$emit("branchSelected", this.selectedBranch.name)
    },
    executeLoader: function(){
             var baseMsg = "Project ID: " + this.selected.id + " - " + this.selected.name;
