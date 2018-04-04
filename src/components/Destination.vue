@@ -2,12 +2,12 @@
 	<div id="Destination">
 		<label>Destination:</label>
 		<input  type="text" v-model="branch">
-		 <p>Project Id: {{ projectid }}</p>
-		</input>
+		 <p>Project Id: {{ branch }}</p>
 	</div>
 </template>
 
 <script>
+import {bus} from '../main';
 export default {
 	name: 'Destination',
 	data : function (){
@@ -16,9 +16,9 @@ export default {
 			}
 	},
   created: function(){ 
-    bus.$on('branchSelected', function (data){
+    bus.$on('branchSelected',  (data) => {
       this.branch = data;
-      })
+      });
   }
 	
 }
