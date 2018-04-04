@@ -66,7 +66,7 @@ export default {
 },
   methods : {
     customLabel: function(data){
-    console.log(data);
+    // console.log(data);
     return `${data.name}`
     },
    branchSelecter: function(project){
@@ -85,7 +85,7 @@ export default {
          this.branches = ["master"];
          var url = "https://api.github.com/repos/sanfx/"+ this.selected.name +"/branches"
          this.projectid = this.selected.id;
-         console.log(url);
+         // console.log(url);
              axios.get(
                  url
                  )
