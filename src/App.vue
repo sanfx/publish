@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!--router-view/-->
-    <p>The current path: {{ $route.path }}.</p>
     <Projects/>
     <Destination/>
   </div>
