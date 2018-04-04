@@ -1,10 +1,16 @@
 <template>
 <div id="select"><label> Source </label>
     <label>Project</label>
-
-     <multiselect v-model="selected" :options="projects" :searchable="false" :custom-label="customLabel" track-by="name" v-on:change="executeLoader">
-         <template slot="customLabel" slot-scope="{ customLabel }"><strong>{{ option.name }}</strong></template>
-  
+     <multiselect  
+     placeholder="Select a Project" 
+     v-model="selected" 
+     :options="projects" 
+     :searchable="true" 
+     :custom-label="customLabel" 
+     track-by="name" 
+     @input="executeLoader"
+     >
+         <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong></template>
     </multiselect>
     <div class="round-button">
         <div class="round-button-circle">
@@ -14,21 +20,27 @@
         </div>
     </div> &nbsp;
     <label>Branch:</label>
-    <select v-model="selectedBranch" v-on:change="branchSelecter">
+    <multiselect 
+    v-model="selectedBranch" 
+    :options="branches"
+    :max="3"
+    :max-height="120"
+    :customLabel="customLabel"
+    track-by="name"
+    @input="branchSelecter">
         <option disabled selected>Select a branch</option>
-        <option v-for="b in branches" :value="b">
+        <template slot="singleLabel" slot-scope="{ option }">{{ option.name }}</template>
+        <!--option v-for="b in branches" :value="b">
             {{ b.name }}
-        </option>
-    </select>
+        </option-->
+    </multiselect>
     <br>
     <small>{{ message }}</small>
 </div>
 </template>
 
 <script>
-
-import Vue from 'vue'
-
+import Vue from 'vue';
 import axios from 'axios';
 import {bus} from '../main';
 import Multiselect from 'vue-multiselect';
@@ -36,6 +48,9 @@ import Multiselect from 'vue-multiselect';
 Vue.component('multiselect', Multiselect)
 export default {
   name: 'Projects',
+  components: {
+    Multiselect
+  },
   data: function () {
   return { 
     projects: [],
@@ -49,10 +64,11 @@ export default {
 },
   methods : {
     customLabel: function(data){
+    console.log(data);
     return `${data.name}`
     },
    branchSelecter: function(project){
-   var msg = "Project: " + this.selected.name + "@" + this.selectedBranch.name + "-1";
+   // var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
    this.message = "Project ID: " + this.selected.id + "-" + this.selected.name + " Branch: "+ this.selectedBranch.name;
    bus.$emit("branchSelected", this.selectedBranch.name)
    },
@@ -97,8 +113,6 @@ export default {
 
 }
 </script>
-<!--style rel="stylesheet" href="vue-multiselect/dist/vue-multiselect.min.css"></style-->
-<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
