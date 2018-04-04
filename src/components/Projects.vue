@@ -1,13 +1,10 @@
 <template>
 <div id="select"><label> Source </label>
     <label>Project</label>
+
      <multiselect v-model="selected" :options="projects" :searchable="false" :custom-label="customLabel" track-by="name" v-on:change="executeLoader">
          <template slot="customLabel" slot-scope="{ customLabel }"><strong>{{ option.name }}</strong></template>
-        <!--option disabled selected>Please Select One</option>
-        <option></option>
-        <option v-for="(n, index) in projects" :value="n" :key="n.id">
-            {{ index }} - {{ n.name }}
-        </option-->
+  
     </multiselect>
     <div class="round-button">
         <div class="round-button-circle">
@@ -29,7 +26,9 @@
 </template>
 
 <script>
-import Vue from 'vue';
+
+import Vue from 'vue'
+
 import axios from 'axios';
 import {bus} from '../main';
 import Multiselect from 'vue-multiselect';
@@ -50,11 +49,10 @@ export default {
 },
   methods : {
     customLabel: function(data){
-    // console.log(data);
     return `${data.name}`
     },
    branchSelecter: function(project){
-   var msg = "Deploy as " + this.selected.name + "@" + this.selectedBranch.name + "-1";
+   var msg = "Project: " + this.selected.name + "@" + this.selectedBranch.name + "-1";
    this.message = "Project ID: " + this.selected.id + "-" + this.selected.name + " Branch: "+ this.selectedBranch.name;
    bus.$emit("branchSelected", this.selectedBranch.name)
    },
@@ -99,7 +97,9 @@ export default {
 
 }
 </script>
-<style rel="stylesheet" href="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<!--style rel="stylesheet" href="vue-multiselect/dist/vue-multiselect.min.css"></style-->
+<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  .round-button {
